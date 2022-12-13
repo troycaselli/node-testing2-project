@@ -1,6 +1,8 @@
 const express = require('express')
 const helmet = require('helmet')
 
+const Colors = require('./colors/colors-model')
+
 const server = express()
 
 server.use(express.json())
@@ -10,12 +12,22 @@ server.get('/', (req, res) => {
     res.status(200).json({message: 'up'})
 })
 
-server.get('/colors', (req, res, next) => {
-    res.json('get')
+server.get('/colors', async (req, res, next) => {
+    try {
+        const colors = await Colors.getAll()
+        res.status(200).json(colors)
+    } catch (err) {
+        next(err)
+    }
 })
 
-server.post('/colors', (req, res, next) => {
-    res.json('post')
+server.post('/colors', async (req, res, next) => {
+    try {
+        const newColor = await Colors.insert(req.body)
+        res.status(201).json(newColor)
+    } catch (err) {
+        next(err)
+    }
 })
 
 server.put('/colors/:id', (req, res, next) => {
