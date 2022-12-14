@@ -16,8 +16,11 @@ async function insert(color) {
     return getById(newId)
 }
 
-function update(id, changes) {
-
+async function update(color_id, changes) {
+    await db('colors')
+        .update(changes)
+        .where({color_id})
+    return getById(color_id)
 }
 
 function remove(id) {

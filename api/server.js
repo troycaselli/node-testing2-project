@@ -24,14 +24,22 @@ server.get('/colors', async (req, res, next) => {
 server.post('/colors', async (req, res, next) => {
     try {
         const newColor = await Colors.insert(req.body)
-        res.status(201).json(newColor)
+        res.status(200).json(newColor)
     } catch (err) {
         next(err)
     }
 })
 
-server.put('/colors/:id', (req, res, next) => {
-    res.json('put')
+server.put('/colors/:id', async (req, res, next) => {
+    try {
+        const updatedColor = await Colors.update(
+            req.params.id, 
+            req.body
+        )
+        res.status(201).json(updatedColor)
+    } catch (err) {
+        next(err)
+    }
 })
 
 server.delete('/colors/:id', (req, res, next) => {
