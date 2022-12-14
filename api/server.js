@@ -42,8 +42,17 @@ server.put('/colors/:id', async (req, res, next) => {
     }
 })
 
-server.delete('/colors/:id', (req, res, next) => {
-    res.json('delete')
+server.delete('/colors/:id', async (req, res, next) => {
+    try {
+        const deleted = await Colors.remove(req.params.id)
+        if(!deleted) {
+            next({status: 404, message: `Color with id ${req.params.id} does not exist`})
+        } else {
+            res.status(200).json(deleted)
+        }
+    } catch (err) {
+        next(err)
+    }
 })
 
 server.get('*', (req, res) => {

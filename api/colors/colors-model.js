@@ -23,8 +23,12 @@ async function update(color_id, changes) {
     return getById(color_id)
 }
 
-function remove(id) {
-
+async function remove(color_id) {
+    const toBeDeleted = await getById(color_id)
+    await db('colors')
+        .where({color_id})
+        .del()
+    return toBeDeleted
 }
 
 module.exports = {
