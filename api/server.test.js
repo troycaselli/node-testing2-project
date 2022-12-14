@@ -12,6 +12,10 @@ beforeEach(async () => {
     await db.seed.run()
 })
 
+afterAll(async () => {
+    await db.destroy()
+})
+
 describe('[GET] /colors', () => {
     test('returns a 200 OK status code', async () => {
         const res = await request(server).get('/colors')
